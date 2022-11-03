@@ -1,10 +1,8 @@
-import { generateView } from "./generateView.mjs";
-
-export const createViewSelect = (key, data) => {
+export const createViewSelect = () => {
 
     const viewSelect = document.createElement("select");
     viewSelect.id = "view-select";
-    viewSelect.className = "form-select border border-5 border-secondary text-center fs-4";
+    viewSelect.className = "form-select border border-3 border-primary border-opacity-75 text-center fs-4";
 
     const defaultOpt = document.createElement("option");
     defaultOpt.disabled = true;

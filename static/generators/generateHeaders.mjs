@@ -1,18 +1,18 @@
 export const generateHeaders = (unorderedIndexEl, unorderedDataEl) => {
     const indexHeaderList = document.createElement("li");
-    indexHeaderList.className = "list-group-item list-group-item-primary";
+    indexHeaderList.className = "list-group-item bg-primary";
 
     const indexHeaderEl = document.createElement("h3");
-    indexHeaderEl.className = "text-center"
+    indexHeaderEl.className = "text-center text-light"
     indexHeaderEl.textContent = "INDEX";
 
     indexHeaderList.appendChild(indexHeaderEl);
 
     const dataHeaderList = document.createElement("li");
-    dataHeaderList.className = "list-group-item list-group-item-primary";
+    dataHeaderList.className = "list-group-item bg-primary";
 
     const dataHeaderEl = document.createElement("h3");
-    dataHeaderEl.className = "text-center"
+    dataHeaderEl.className = "text-center text-light"
     dataHeaderEl.textContent = "DATA";
     
     dataHeaderList.appendChild(dataHeaderEl);

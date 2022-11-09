@@ -77,13 +77,6 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
         //retrieved from database
         if (passedKey) {
-            const hashMap = new Map();
-
-            for (const index in data) {
-                const entry = data[index]
-                hashMap.set(index, entry)
-            }
-
             const unorderedIndexEl = document.createElement("ul");
             unorderedIndexEl.className = "list-group col";
             unorderedIndexEl.id = "index-list-container";
@@ -93,13 +86,22 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
             unorderedDataEl.id = "data-list-container";
 
             generateHeaders(unorderedIndexEl, unorderedDataEl);
-            hashParser(data, unorderedIndexEl, unorderedDataEl, hashMap, passedKey, viewType, depthCount);
+            if (passedKey === true) {
+                listParser(dataType, viewType, rowCount, depthCount, data, unorderedIndexEl, unorderedDataEl);
+            } else {
+                const hashMap = new Map();
+
+                for (const index in data) {
+                    const entry = data[index]
+                    hashMap.set(index, entry)
+                }
+                hashParser(data, unorderedIndexEl, unorderedDataEl, hashMap, passedKey, viewType, depthCount);
+            }
 
             indexContainer.appendChild(unorderedIndexEl);
             keyContainer.appendChild(unorderedDataEl);
 
-        }
-        else {
+        } else {
             const spinnerEl = document.querySelector("#spinner");
             const spinnerContainer = document.querySelector("#spinnerContainer");
 
@@ -164,6 +166,7 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
                     // create string hash
                     if (typeof (val) === "string" || typeof (val) === "boolean" || typeof (val) === "number") {
+                        console.log("NUM / BOOL/ STR")
                         for (const row in data) {
                             let hashEntry = {
                                 val: {},
@@ -204,6 +207,7 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
                     // loop that covers anything else that is not number/boolean/string
                     else {
+                        console.log("anything else")
                         for (const row in data) {
                             let hashEntry = {
                                 val: {},
@@ -227,6 +231,7 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
                     // place in "view-generator" or "addtlContainer"
                     const table = tableGenerator(key, data, collisionCount, longestCollision);
                     viewCont.appendChild(table);
+                    submit("hash", hashMap, key);
                 }
             }
             else if (dataType === "object") {
@@ -274,18 +279,21 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
                 // place in "view-generator" or "addtlContainer"
                 const table = tableGenerator(key, data, collisionCount, longestCollision);
                 viewCont.appendChild(table);
+                console.log(key)
+                submit("hash", data);
             }
             else {
                 console.log("Uncaught dataType: ", dataType)
             }
 
-            if (!passedKey) submit("hash", hashMap, key);
+            //if (!passedKey) submit("hash", hashMap, key);
         }
     }
 }
 
 
 const submit = (viewType, data, key) => {
+    console.log("AFTER SUBMIT: ", data)
     const submitBtn = document.querySelector("#submit");
     submitBtn.hidden = false;
     submitBtn.disabled = false;
@@ -319,7 +327,7 @@ const openModal = (viewType, data, key) => {
 
     const sendData = async () => {
         let allData;
-        if (viewType === "hash") {
+        if (viewType === "hash" && key) {
             // canonize data to string format
             // otherwise, backend may alter syntax => difficult to reformat to JS when fetching data
             const dataObj = Object.fromEntries(data);
@@ -328,13 +336,13 @@ const openModal = (viewType, data, key) => {
             allData = { type: viewType, key: key, data: dataStr, name: modalInput.value, url: URL };
         }
 
-        else if (viewType === "list") {
+        else {
             const dataStr = JSON.stringify(data)
             allData = { type: viewType, data: dataStr, name: modalInput.value, url: URL };
         }
 
         try {
-            const sendData = await fetch("/test", {
+            const sendDataResponse = await fetch("/test", {
                 method: "POST",
                 mode: 'same-origin',
                 headers: {
@@ -343,11 +351,11 @@ const openModal = (viewType, data, key) => {
                 body: JSON.stringify(allData)
             })
 
-            if (sendData.ok) {
+            if (sendDataResponse.ok) {
 
                 const successMsg = document.querySelector("#successMsg");
                 const modalClose = document.querySelector("#modalClose");
-                const response = await sendData.json();
+                const response = await sendDataResponse.json();
 
                 if (response.ok) {
                     modalInput.value = '';
@@ -463,6 +471,44 @@ const hashParser = (prevData, ulIndexElement, ulDataElement, hashMap, key, viewT
         else {
             const dataColEntry = dataCol(hashKey, val.val, val.val[key]);
             ulDataElement.appendChild(dataColEntry);
+        }
+    }
+}
+
+/**
+ * 
+ * @param {*} dataType 
+ * @param {*} viewType 
+ * @param {*} rowCount 
+ * @param {*} depthCount 
+ * @param {*} data 
+ * @param {*} unorderedIndexEl 
+ * @param {*} unorderedDataEl 
+ */
+const listParser = (dataType, viewType, rowCount, depthCount, data, unorderedIndexEl, unorderedDataEl) => {
+    if (dataType === "array") {
+        for (const row of data) {
+            // data column
+            const dataListEl = dataCol(rowCount, row)
+            // index column
+            const indexListEl = indexCol(depthCount, data, rowCount, viewType, data);
+
+            // append both columns to respective ul's
+            unorderedIndexEl.appendChild(indexListEl);
+            unorderedDataEl.appendChild(dataListEl);
+
+            rowCount++;
+        }
+    }
+    else if (dataType === "object") {
+        for (const row in data) {
+            const dataListEl = dataCol(rowCount, data[row])
+            const indexListEl = indexCol(depthCount, data, row, viewType, data);
+
+            unorderedIndexEl.appendChild(indexListEl);
+            unorderedDataEl.appendChild(dataListEl);
+
+            rowCount++;
         }
     }
 }

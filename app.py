@@ -91,7 +91,8 @@ def test():
             db.execute(f'INSERT INTO {table_name} (index_col) VALUES(?)', (row_num, ))
 
             hash_set = data_obj[row_num]
-            hash_sift(table_name, hash_set, row_num)
+            if key:
+                hash_sift(table_name, hash_set, row_num)
 
     con.commit()
     db.close()

@@ -21,12 +21,16 @@ export const dropdownMenu = (itemsArr, prev, viewType, depth) => {
             // add columns to url input bar
             const mainURLBtnContainer = document.querySelector("#mainURLBtnContainer");
             if (mainURLBtnContainer) {
+                const divContainer = document.createElement("div");
+                divContainer.className = "d-flex flex-row";
                 const nextArrow = document.createElement("i");
                 nextArrow.className = "bi bi-arrow-right d-flex my-auto fs-5";
-                mainURLBtnContainer.appendChild(nextArrow);
+                divContainer.appendChild(nextArrow);
                 const key = Object.keys(item)
                 const subURL = buttonContainer(key[0], prev, depth);
-                mainURLBtnContainer.appendChild(subURL);
+                divContainer.appendChild(subURL);
+                
+                mainURLBtnContainer.appendChild(divContainer);
             }
 
             const viewSelect = document.querySelector("#view-select");

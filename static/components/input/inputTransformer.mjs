@@ -15,7 +15,7 @@ export const inputTransformer = (remove) => {
        
         //main container
         mainContainer = document.createElement("div");
-        mainContainer.className = "d-flex bg-white col rounded border border-primary border-opacity-75 border-3";
+        mainContainer.className = "d-flex flex-column flex-md-row bg-white col rounded border border-primary border-opacity-75 border-3";
         mainContainer.id = "mainURLBtnContainer";
 
         routeInputGroup.appendChild(mainContainer);        

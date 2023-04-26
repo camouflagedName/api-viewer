@@ -5,12 +5,10 @@ import { inputTransformer } from "../components/input/inputTransformer.mjs";
 import { buttonContainer } from "../components/input/buttonContainer.mjs";
 
 export const viewGenerator = () => {
-    const submitEl = document.querySelector("#table-form");
-    const selectEl = document.querySelector("#table-select");
-    const routeInput = document.querySelector("#route-input-url");
-    const tableSearchBtn = document.querySelector("#table-search-btn")
-    const routeBtn = document.querySelector("#route-search-btn");
-
+    const $submitEl = $("#table-form");
+    const $routeInput = $("#route-input-url");
+    const $tableSearchBtn = $("#table-search-btn");
+    const $routeBtn = $("#route-search-btn");
     let tableName;
 
     /** FUNCTION DEFS **/
@@ -31,37 +29,45 @@ export const viewGenerator = () => {
         return false;
     }
 
-    const getTableFromDatabase = async (listType) => {
+    const getTableFromDatabase = async () => {
         try {
-            const getResponse = await fetch("/get_table", {
+            const getResponse_delete = await fetch("/get_table", {
                 method: 'POST',
                 mode: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ name: tableName })
-            })
+            });
 
-            if (getResponse.ok) {
-                const returnData = await getResponse.json();
-                const data = typeof(returnData.data) === "string" ? JSON.parse(returnData.data) : returnData.data;
-                let key = returnData.key;
-                const metaData = returnData.meta_data;
-                const tableType = returnData.type;
+            const getResponse = await $.ajax({
+                url: "/get_table",
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({ name: tableName })
+            });
+
+            if (getResponse) {
+                //const returnData = await getResponse.json();
+                const data = typeof (getResponse.data) === "string" ? JSON.parse(getResponse.data) : getResponse.data;
+                let key = getResponse.key;
+                const metaData = getResponse.meta_data;
+                const tableType = getResponse.type;
 
                 // generate meta table
-                const tableContainer = document.querySelector("#metaTableContainer");
+                const $tableContainer = $("#metaTableContainer");
                 const headers = ["Table Name", "URL", "Type", "Creation Date"]
                 const tableEl = createTable(headers, metaData);
-                tableContainer.appendChild(tableEl);
-                
+                $tableContainer.append(tableEl);
+
                 let dataType;
-            
+
                 // check if array
                 if (data.constructor === Array) {
                     dataType = "array";
                 }
-                else if (typeof(data) === "object") {
+                else if (typeof (data) === "object") {
                     dataType = "object";
                 }
 
@@ -77,74 +83,74 @@ export const viewGenerator = () => {
 
     /** EVENTS */
 
-    routeInput.onchange = () => {
-        const routeInputErrMsgEl = document.querySelector("#routeInputErrMsg");
-        routeInputErrMsgEl.textContent = '';
+    $routeInput.on('change', () => {
+        const $routeInputErrMsgEl = $("#routeInputErrMsg");
+        $routeInputErrMsgEl.text('');
 
-        if (routeInput.value === '' || routeInput.value.match(/\s/g)) {
-            routeBtn.disabled = true;
+        if ($routeInput.val() === '' || $routeInput.val().match(/\s/g)) {
+            $routeBtn.prop('disabled', true);
         }
         else {
-            routeBtn.disabled = false;
+            $routeBtn.prop('disabled', false);
         }
-    }
+    });
 
-    if (selectEl) {
-        selectEl.onchange = evt => {
+    if ($("#table-select")) {
+        $("#table-select").on('change', evt => {
             tableName = evt.target.value;
-            tableSearchBtn.disabled = false;
-        }
+            $tableSearchBtn.prop('disabled', false);
+        });
 
 
-        tableSearchBtn.onclick = () => {
-            
-            const indexListCont = document.querySelector("#data-list-container");
-            const dataListCont = document.querySelector("#index-list-container");
-            const table = document.querySelector("#table");
+        $tableSearchBtn.on('click', () => {
+
+            const $indexListCont = $("#data-list-container");
+            const $dataListCont = $("#index-list-container");
+            const $table = $("#table");
 
             // check if data-list-container and index-list-container exist and then remove
-            if (indexListCont && dataListCont) {
-                indexListCont.remove();
-                dataListCont.remove();
+            if ($indexListCont && $dataListCont) {
+                $indexListCont.remove();
+                $dataListCont.remove();
             }
 
-            if (table) {
-                table.remove();
+            if ($table) {
+                $table.remove();
             }
 
-            document.querySelector("#route-input-group").hidden = true;
-            document.querySelector("#ORHeader").hidden = true;
+            $("#route-input-group").hide();
+            $("#ORHeader").hide();
             getTableFromDatabase()
-        }
+        });
     }
 
-    routeBtn.onclick = (evt) => {
-        const indexListCont = document.querySelector("#data-list-container");
-        const dataListCont = document.querySelector("#index-list-container");
-        const table = document.querySelector("#table");
+    $routeBtn.on('click', (evt) => {
+        const $indexListCont = $("#data-list-container");
+        const $dataListCont = $("#index-list-container");
+        const $table = $("#table");
 
-        if (indexListCont && dataListCont) {
-            indexListCont.remove();
-            dataListCont.remove();
+        if ($indexListCont && $dataListCont) {
+            $indexListCont.remove();
+            $dataListCont.remove();
         }
 
-        if (table) {
-            table.remove();
+        if ($table) {
+            $table.remove();
         }
 
         getDataFromURL(evt);
 
         //replace url input and append with button
         const inputTransformerObj = inputTransformer(true);
-        const buttonContainerObj = buttonContainer(routeInput.value);
-        inputTransformerObj.appendChild(buttonContainerObj);
+        const buttonContainerObj = buttonContainer($routeInput.val());
+        inputTransformerObj.append(buttonContainerObj);
 
-        if (selectEl) {
-            document.querySelector("#ORHeader").hidden = true;
-            tableSearchBtn.hidden = true;
-            selectEl.hidden = true;
+        if ($("#table-select")) {
+            $("#ORHeader").hide();
+            $tableSearchBtn.hide()
+            $("#table-select").hide();
         }
-    }
+    });
 
-    submitEl.onsubmit = (evt) => handleSubmit(evt);
+    $submitEl.on('submit', () => handleSubmit());
 }

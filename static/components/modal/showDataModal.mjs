@@ -4,6 +4,7 @@ import { expandedDataView } from "../displayTable/dataColumn/dataCol.mjs";
  * @param {*} header 
  * @param {*} body 
  */
+
 export const showDataModal = (header, data) => {
     const dataModal = document.querySelector("#submit-modal");
     const getDataUL = document.querySelector("#dataUL");
@@ -27,3 +28,24 @@ export const showDataModal = (header, data) => {
 
     dataModalBody.appendChild(listContainer);
 }
+
+/* 
+export const showDataModal = (header, data) => {
+    const $dataModal = $("#submit-modal");
+    const $getDataUL = $("#dataUL");
+    const $dataModalTitle = $("#dataModalTitle");
+    const $dataModalBody = $("#dataModalBody");
+    const $listContainer = $("<ul>");
+
+    $listContainer.attr('id', 'dataUL');
+    $dataModal.show();
+    $getDataUL?.remove()
+    $dataModalTitle.text(header);
+    expandedDataView(data, $listContainer); 
+
+    $dataModal.on("hide.bs.modal", () => $dataModalTitle.text(''));
+
+    $dataModalBody.append($listContainer);
+}
+
+ */

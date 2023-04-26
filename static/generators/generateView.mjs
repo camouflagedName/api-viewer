@@ -7,67 +7,52 @@ import { addArrow } from "../addArrow.mjs";
 import { spinner } from "../components/spinner.mjs";
 
 export const generateView = (passedKey, data, viewType = "List", dataType, depthCount = 0) => {
-    const keyContainer = document.querySelector("#key-container");
-    const indexContainer = document.querySelector("#index-container")
-    const addtlContainer = document.querySelector("#additional-container");
-    const viewCont = document.querySelector("#view-container");
-
+    //const keyContainer = document.querySelector("#key-container");
+    //const indexContainer = document.querySelector("#index-container")
+    //const addtlContainer = document.querySelector("#additional-container");
+    const $keyContainer = $("#key-container");
+    const $indexContainer = $("#index-container");
     let rowCount = 0;
+
     if (viewType === "List" || viewType === "list") {
-        const spinnerEl = document.querySelector("#spinner");
-        if (spinnerEl) {
-            spinnerEl.remove();
-        }
+        const $unorderedIndexEl = $("<ul>").addClass("list-group col").attr("id", "index-list-container");
+        const $unorderedDataEl = $("<ul>").addClass("list-group col-12 col-md").attr("id", "data-list-container");
 
-        // remove previous data/index cols
-        const indexColToRemove = document.querySelector("#index-list-container");
-        const dataColToRemove = document.querySelector("#data-list-container");
+        // remove spinner & previous data/index cols
+        $("#spinner").remove();
+        $("#index-list-container").remove();
+        $("#data-list-container").remove();
 
-        if (indexColToRemove) {
-            indexColToRemove.remove();
-        }
-
-        if (dataColToRemove) {
-            dataColToRemove.remove();
-        }
-        const unorderedIndexEl = document.createElement("ul");
-        unorderedIndexEl.className = "list-group col";
-        unorderedIndexEl.id = "index-list-container";
-
-        const unorderedDataEl = document.createElement("ul");
-        unorderedDataEl.className = "list-group col-12 col-md";
-        unorderedDataEl.id = "data-list-container";
-
-        generateHeaders(unorderedIndexEl, unorderedDataEl);
+        generateHeaders($unorderedIndexEl, $unorderedDataEl);
 
         if (dataType === "array") {
             for (const row of data) {
                 // data column
-                const dataListEl = dataCol(rowCount, row)
+                const dataListEl = dataCol(rowCount, row);
                 // index column
                 const indexListEl = indexCol(depthCount, data, rowCount, viewType, data);
 
                 // append both columns to respective ul's
-                unorderedIndexEl.appendChild(indexListEl);
-                unorderedDataEl.appendChild(dataListEl);
+                $unorderedIndexEl.append(indexListEl);
+                $unorderedDataEl.append(dataListEl);
 
                 rowCount++;
             }
         }
         else if (dataType === "object") {
             for (const row in data) {
-                const dataListEl = dataCol(rowCount, data[row])
+                const dataListEl = dataCol(rowCount, data[row]);
                 const indexListEl = indexCol(depthCount, data, row, viewType, data);
 
-                unorderedIndexEl.appendChild(indexListEl);
-                unorderedDataEl.appendChild(dataListEl);
+                $unorderedIndexEl.append(indexListEl);
+                $unorderedDataEl.append(dataListEl);
 
                 rowCount++;
             }
         }
 
-        indexContainer.appendChild(unorderedIndexEl);
-        keyContainer.appendChild(unorderedDataEl);
+        $indexContainer.append($unorderedIndexEl);
+        $keyContainer.append($unorderedDataEl);
 
         if (!passedKey) submit("list", data);
     }
@@ -77,17 +62,12 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
         //retrieved from database
         if (passedKey) {
-            const unorderedIndexEl = document.createElement("ul");
-            unorderedIndexEl.className = "list-group col";
-            unorderedIndexEl.id = "index-list-container";
+            const $unorderedIndexEl = $("<ul>").addClass("list-group col").attr("id", "index-list-container");
+            const $unorderedDataEl = $("<ul>").addClass("list-group col").attr("id", "data-list-container");
 
-            const unorderedDataEl = document.createElement("ul");
-            unorderedDataEl.className = "list-group col";
-            unorderedDataEl.id = "data-list-container";
-
-            generateHeaders(unorderedIndexEl, unorderedDataEl);
+            generateHeaders($unorderedIndexEl, $unorderedDataEl);
             if (passedKey === true) {
-                listParser(dataType, viewType, rowCount, depthCount, data, unorderedIndexEl, unorderedDataEl);
+                listParser(dataType, viewType, rowCount, depthCount, data, $unorderedIndexEl, $unorderedDataEl);
             } else {
                 const hashMap = new Map();
 
@@ -95,21 +75,15 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
                     const entry = data[index]
                     hashMap.set(index, entry)
                 }
-                hashParser(data, unorderedIndexEl, unorderedDataEl, hashMap, passedKey, viewType, depthCount);
+                hashParser(data, $unorderedIndexEl, $unorderedDataEl, hashMap, passedKey, viewType, depthCount);
             }
 
-            indexContainer.appendChild(unorderedIndexEl);
-            keyContainer.appendChild(unorderedDataEl);
+            $indexContainer.append($unorderedIndexEl);
+            $keyContainer.append($unorderedDataEl);
 
         } else {
-            const spinnerEl = document.querySelector("#spinner");
-            const spinnerContainer = document.querySelector("#spinnerContainer");
-
             //remove previous iteration of spinner
-            if (spinnerEl) {
-                spinnerEl.remove();
-            }
-
+            $("#spinner")?.remove();
             let unorderedIndexEl;
             let unorderedDataEl;
             let key;
@@ -121,40 +95,22 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
                 //add spinner
                 const spinnerObj = spinner();
-                spinnerContainer.appendChild(spinnerObj);
+                $("#spinnerContainer").append(spinnerObj);
 
                 // display key chooser drop down
                 const selectKeyEl = selectKey(data, dataType);
-                addtlContainer.appendChild(selectKeyEl);
+                $("#additional-container").append(selectKeyEl);
 
                 selectKeyEl.onchange = () => {
-                    // remove spinner
-                    const spinnerEl = document.querySelector("#spinner");
-                    if (spinnerEl) {
-                        spinnerEl.remove();
-                    }
+                    // remove spinner & previous data/index cols
+                    $("#spinner")?.remove();
+                    $("#index-list-container")?.remove();
+                    $("#data-list-container")?.remove();
 
-                    // remove previous data/index cols
-                    const indexColToRemove = document.querySelector("#index-list-container");
-                    const dataColToRemove = document.querySelector("#data-list-container");
+                    const $unorderedIndexEl = $("<ul>").addClass("list-group col").attr("id", "index-list-container");
+                    const $unorderedDataEl = $("<ul>").addClass("list-group col").attr("id", "data-list-container");
 
-                    if (indexColToRemove) {
-                        indexColToRemove.remove();
-                    }
-
-                    if (dataColToRemove) {
-                        dataColToRemove.remove();
-                    }
-
-                    unorderedIndexEl = document.createElement("ul");
-                    unorderedIndexEl.className = "list-group col";
-                    unorderedIndexEl.id = "index-list-container";
-
-                    unorderedDataEl = document.createElement("ul");
-                    unorderedDataEl.className = "list-group col";
-                    unorderedDataEl.id = "data-list-container";
-
-                    generateHeaders(unorderedIndexEl, unorderedDataEl);
+                    generateHeaders($unorderedIndexEl, $unorderedDataEl);
 
                     key = selectKeyEl.value;
                     const val = data[0][key];
@@ -194,70 +150,46 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
                                 hashMap.set(hashMod, hashObject)
                                 collisionCount++;
-                            }
-                            else {
+                            } else {
                                 hashMap.set(hashMod, hashEntry)
                             }
 
                         }
 
                         // parse through hash to build the index / data table
-                        hashParser(data, unorderedIndexEl, unorderedDataEl, hashMap, key, viewType, depthCount);
-                    }
+                        hashParser(data, $unorderedIndexEl, $unorderedDataEl, hashMap, key, viewType, depthCount);
+                    } else {
+                        // loop that covers anything else that is not number/boolean/string
 
-                    // loop that covers anything else that is not number/boolean/string
-                    else {
-                        console.log("anything else")
                         for (const row in data) {
-                            let hashEntry = {
-                                val: {},
-                                next: null
-                            }
                             const dataVal = data[row]
                             hash = dataVal[key] % data.length;
                             hashMap.set(hash, data[row])
 
                             const dataColEntry = dataCol(hash, dataVal, dataVal[key]);
-                            unorderedDataEl.appendChild(dataColEntry);
+                            $unorderedDataEl.append(dataColEntry);
 
                             const indexColEntry = indexCol(depthCount, dataVal, hash, viewType, data);
-                            unorderedIndexEl.appendChild(indexColEntry);
-
+                            $unorderedIndexEl.append(indexColEntry);
                         }
                     }
-                    indexContainer.appendChild(unorderedIndexEl);
-                    keyContainer.appendChild(unorderedDataEl);
+                    $indexContainer.append(unorderedIndexEl);
+                    $keyContainer.append(unorderedDataEl);
 
                     // place in "view-generator" or "addtlContainer"
                     const table = tableGenerator(key, data, collisionCount, longestCollision);
-                    viewCont.appendChild(table);
+                    $("#view-container").append(table);
                     submit("hash", hashMap, key);
                 }
-            }
-            else if (dataType === "object") {
-                const indexColToRemove = document.querySelector("#index-list-container");
-                const dataColToRemove = document.querySelector("#data-list-container");
+            } else if (dataType === "object") {
+                $("#index-list-container")?.remove();
+                $("#data-list-container")?.remove();
 
-                if (indexColToRemove) {
-                    indexColToRemove.remove();
-                }
-
-                if (dataColToRemove) {
-                    dataColToRemove.remove();
-                }
-
-                unorderedIndexEl = document.createElement("ul");
-                unorderedIndexEl.className = "list-group col";
-                unorderedIndexEl.id = "index-list-container";
-
-                unorderedDataEl = document.createElement("ul");
-                unorderedDataEl.className = "list-group col";
-                unorderedDataEl.id = "data-list-container";
-
-                generateHeaders(unorderedIndexEl, unorderedDataEl);
+                const $unorderedIndexEl = $("<ul>").addClass("list-group col").attr("id", "index-list-container");
+                const $unorderedDataEl = $("<ul>").addClass("list-group col").attr("id", "data-list-container");
+                generateHeaders($unorderedIndexEl, $unorderedDataEl);
 
                 for (const dataKey in data) {
-
                     const dataVal = data[dataKey];
 
                     //hash = dataVal[key] % data.length;
@@ -265,24 +197,23 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
                     const bucketEntry = { [dataKey]: data[dataKey] }
 
                     const dataColEntry = dataCol(rowCount, bucketEntry);
-                    unorderedDataEl.appendChild(dataColEntry);
+                    $unorderedDataEl.append(dataColEntry);
 
                     const indexColEntry = indexCol(depthCount, dataVal, rowCount, viewType, data);
-                    unorderedIndexEl.appendChild(indexColEntry);
+                    $unorderedIndexEl.append(indexColEntry);
 
                     rowCount++;
                 }
 
-                indexContainer.appendChild(unorderedIndexEl);
-                keyContainer.appendChild(unorderedDataEl);
+                $indexContainer.append($unorderedIndexEl);
+                $keyContainer.append($unorderedDataEl);
 
                 // place in "view-generator" or "addtlContainer"
                 const table = tableGenerator(key, data, collisionCount, longestCollision);
-                viewCont.appendChild(table);
-                console.log(key)
+                $("#view-container").append(table);
+
                 submit("hash", data);
-            }
-            else {
+            } else {
                 console.log("Uncaught dataType: ", dataType)
             }
 
@@ -293,37 +224,31 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
 
 
 const submit = (viewType, data, key) => {
-    console.log("AFTER SUBMIT: ", data)
-    const submitBtn = document.querySelector("#submit");
-    submitBtn.hidden = false;
-    submitBtn.disabled = false;
-    submitBtn.textContent = `Submit ${viewType}`;
-
-    submitBtn.onclick = () => {
+    $("button#submit").removeAttr("hidden").show();
+    $("#submit").prop('disabled', false);
+    $("#submit").text(`Submit ${viewType}`);
+    $("#submit").on('click', () => {
         openModal(viewType, data, key);
-    }
+    });
 }
 
 const openModal = (viewType, data, key) => {
-    const modalEl = document.querySelector("#submit-modal");
-    const modalSubmitBtn = document.querySelector("#modal-confirm");
-    const modalInput = document.querySelector("#table-name");
-    const routeInputEl = document.querySelector("#route-input-url");
-    const URL = routeInputEl.value;
+    const modalSubmitBtn = $("#modal-confirm");
+    const modalInput = $("#table-name");
+    const URL = $("#route-input-url").val();
 
-    modalEl.hidden = false;
+    $("#submit-modal").show();
 
-    modalInput.onchange = () => {
-        if (modalInput.value.length > 0) {
-            const modalErrMsg = document.querySelector("#errorMsg")
-            modalErrMsg.textContent = ""
-            modalSubmitBtn.disabled = false;
+    modalInput.on('change', () => {
+        if (modalInput.val().length > 0) {
+            const modalErrMsg = $("#errorMsg");
+            modalErrMsg.text("");
+            modalSubmitBtn.prop('disabled', false);
         }
-    }
+    });
 
-    modalSubmitBtn.onclick = () => {
-        sendData();
-    }
+    modalSubmitBtn.on('click', () => sendData());
+    
 
     const sendData = async () => {
         let allData;
@@ -333,15 +258,16 @@ const openModal = (viewType, data, key) => {
             const dataObj = Object.fromEntries(data);
             const dataStr = JSON.stringify(dataObj)
 
-            allData = { type: viewType, key: key, data: dataStr, name: modalInput.value, url: URL };
+            allData = { type: viewType, key: key, data: dataStr, name: modalInput.val(), url: URL };
         }
 
         else {
             const dataStr = JSON.stringify(data)
-            allData = { type: viewType, data: dataStr, name: modalInput.value, url: URL };
+            allData = { type: viewType, data: dataStr, name: modalInput.val(), url: URL };
         }
 
         try {
+            console.log(allData)
             const sendDataResponse = await fetch("/test", {
                 method: "POST",
                 mode: 'same-origin',
@@ -358,17 +284,16 @@ const openModal = (viewType, data, key) => {
                 const response = await sendDataResponse.json();
 
                 if (response.ok) {
-                    modalInput.value = '';
-                    modalInput.hidden = true;
-                    modalSubmitBtn.disabled = true;
-                    modalSubmitBtn.hidden = true;
+                    modalInput.val('');
+                    modalInput.hide();
+                    modalSubmitBtn.prop('disabled', true);
+                    modalSubmitBtn.hide();
                     successMsg.hidden = false;
                     modalClose.textContent = "Close";
                     modalClose.onclick = () => {
                         location.reload();
                     }
-                }
-                else {
+                } else {
                     const modalErrMsg = document.querySelector("#errorMsg")
                     modalErrMsg.textContent = response.error
                 }
@@ -427,19 +352,19 @@ const updateHashEntry = (hashObject, hashEntry, count = 0) => {
  * @returns HTMLDivElement
  */
 const createDataCols = (valObj, key, row) => {
-    const inputContainer = document.createElement("div");
-    inputContainer.className = "d-flex";
+    const inputContainer = $("<div>");
+    inputContainer.addClass("d-flex");
     let inputEl;
 
     while (valObj) {
         inputEl = dataCol(row, valObj.val, valObj.val[key], true)
 
-        inputContainer.appendChild(inputEl);
+        inputContainer.append(inputEl);
 
         // insert col with arrow
         if (valObj.next) {
             let arrowImg = addArrow("20");
-            inputContainer.appendChild(arrowImg);
+            inputContainer.append(arrowImg);
         }
 
         valObj = valObj.next;
@@ -450,27 +375,27 @@ const createDataCols = (valObj, key, row) => {
 
 /** 
  * Parses through hash to build li node elements
- * @param {HTMLUListElement} ulIndexElement
- * @param {HTMLUListElement} ulDataElement
+ * @param {JQuery<HTMLElement>} ulIndexElement
+ * @param {JQuery<HTMLElement>} ulDataElement
  */
 const hashParser = (prevData, ulIndexElement, ulDataElement, hashMap, key, viewType, depthCount) => {
     for (const [hashKey, val] of hashMap) {
         const indexColEntry = indexCol(depthCount, val, hashKey, viewType, prevData);
-        ulIndexElement.appendChild(indexColEntry);
+        ulIndexElement.append(indexColEntry);
 
         // check if val.next exists => collision
         if (val.next) {
-            const dataListEl = document.createElement("li");
-            dataListEl.className = "list-group-item list-group-item-primary";
+            const dataListEl = $("<li>");
+            dataListEl.addClass("list-group-item list-group-item-primary");
 
             // create more columns upon collision
             const entry = createDataCols(val, key, hashKey);
-            dataListEl.appendChild(entry);
-            ulDataElement.appendChild(dataListEl);
+            dataListEl.append(entry);
+            ulDataElement.append(dataListEl);
         }
         else {
             const dataColEntry = dataCol(hashKey, val.val, val.val[key]);
-            ulDataElement.appendChild(dataColEntry);
+            ulDataElement.append(dataColEntry);
         }
     }
 }
@@ -494,8 +419,8 @@ const listParser = (dataType, viewType, rowCount, depthCount, data, unorderedInd
             const indexListEl = indexCol(depthCount, data, rowCount, viewType, data);
 
             // append both columns to respective ul's
-            unorderedIndexEl.appendChild(indexListEl);
-            unorderedDataEl.appendChild(dataListEl);
+            unorderedIndexEl.append(indexListEl);
+            unorderedDataEl.append(dataListEl);
 
             rowCount++;
         }
@@ -505,8 +430,8 @@ const listParser = (dataType, viewType, rowCount, depthCount, data, unorderedInd
             const dataListEl = dataCol(rowCount, data[row])
             const indexListEl = indexCol(depthCount, data, row, viewType, data);
 
-            unorderedIndexEl.appendChild(indexListEl);
-            unorderedDataEl.appendChild(dataListEl);
+            unorderedIndexEl.append(indexListEl);
+            unorderedDataEl.append(dataListEl);
 
             rowCount++;
         }

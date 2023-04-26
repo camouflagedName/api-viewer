@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS50X CAPSTONE</title>
+    <title>API Data Viewer</title>
 
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.2.2/dist/spacelab/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
 <!--     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> 
@@ -68,7 +67,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-d bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand fs-3" href="#">CS50 Final Project</a>
+          <a class="navbar-brand fs-3" href="#">API Data Viewer</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -137,6 +136,7 @@
             </div>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
     <script src="../static/script.mjs" type="module"></script>
 </body>
 

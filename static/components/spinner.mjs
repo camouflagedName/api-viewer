@@ -1,18 +1,17 @@
 export const spinner = () => {
 
     //container div
-    const divEl = document.createElement("div");
-    divEl.id = "spinner";
-    divEl.className = "spinner-border text-primary";
-    const role = document.createAttribute("role");
-    role.value = "status";
-    divEl.setAttributeNode(role);
+    const $divEl = $("<div>");
+    $divEl.attr('id', 'spinner');
+    $divEl.attr('role', 'status');
+    $divEl.addClass("spinner-border text-primary");
 
     //span element
-    const spanEl = document.createElement("span");
-    spanEl.className = "visually-hidden";
-    spanEl.textContent = "Loading...";
-    divEl.appendChild(spanEl);
+    const $spanEl = $("<span>");
+    $spanEl.addClass("visually-hidden");
+    $spanEl.text("Loading...");
 
-    return divEl;
+    $divEl.append($spanEl);
+
+    return $divEl;
 }

@@ -12,10 +12,9 @@ export const tableGenerator = (key, data, collisionCount, longestCollision) => {
     let keyVar;
     keyVar = key;
 
-    const prevTable = document.querySelector("#table")
-    if (prevTable) {
-        prevTable.remove()
-    }
+
+    $("#table")?.remove()
+
     let uniqueLvlPercentage = "100%";
     if (key) {
         let tempArr = JSON.parse(JSON.stringify(data))

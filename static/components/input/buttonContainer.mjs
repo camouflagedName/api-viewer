@@ -1,29 +1,24 @@
 import { generateView } from "../../generators/generateView.mjs";
 
 export const buttonContainer = (currentKey, prev, depth) => {
-    const columnContainer = document.createElement("div");
-    columnContainer.className = "d-flex border border-2 rounded my-2 mx-1";
+    const columnContainer = $("<div>");
+    columnContainer.addClass("d-flex border border-2 rounded my-2 mx-1");
 
-    const inputButtonEl = document.createElement("button");
-    inputButtonEl.className = "btn btn-transparent border border-0 text-break";
-    inputButtonEl.textContent = currentKey;
+    const inputButtonEl = $("<button>");
+    inputButtonEl.addClass("btn btn-transparent border border-0 text-break");
+    inputButtonEl.text(currentKey);
+    inputButtonEl.attr("id", depth ? `routeInput-${depth.toString()}` : "route-input-url");
 
-
-    inputButtonEl.id = depth ? `routeInput-${depth.toString()}` : "route-input-url";
-
-
-    const closeBtn = document.createElement("button");
-    const type = document.createAttribute("type");
-    type.value = "button";
-    closeBtn.setAttributeNode(type);
-    closeBtn.className = "btn-close";
-    closeBtn.ariaLabel = "Close";
-    closeBtn.style.fontSize = "10px";
-    closeBtn.onclick = () => {
+    const closeBtn = $("<button>");
+    closeBtn.attr("type", 'button');
+    closeBtn.addClass("btn-close");
+    closeBtn.attr("ariaLabel", 'Close');
+    closeBtn.css("fontSize", "10px");
+    closeBtn.on('click', () => {
         let prevData;
         if (prev) {
-            const buttonArr = document.querySelectorAll("#mainURLBtnContainer div");
-            const arrowElArr = document.querySelectorAll(".bi.bi-arrow-right")
+            const buttonArr = $("#mainURLBtnContainer div");
+            const arrowElArr = $(".bi.bi-arrow-right")
 
             if (prev.data.constructor === Map) {
                 if (prev.dataType === "object") {
@@ -42,14 +37,14 @@ export const buttonContainer = (currentKey, prev, depth) => {
                 }
             }
 
-            const viewSelect = document.querySelector("#view-select");
+            const viewSelect = $("#view-select");
             viewSelect.value = prev.viewType;
-            viewSelect.onchange = evt => {
+            viewSelect.on('change', evt => {
                 // create key selector
-                const keySelectorEl = document.querySelector('#key-selector');
-                const indexListCont = document.querySelector("#data-list-container");
-                const dataListCont = document.querySelector("#index-list-container");
-                const tableEl = document.querySelector("#table");
+                const keySelectorEl = $('#key-selector');
+                const indexListCont = $("#data-list-container");
+                const dataListCont = $("#index-list-container");
+                const tableEl = $("#table");
                 const listType = evt.target.value;
 
                 if (indexListCont && dataListCont) {
@@ -66,47 +61,32 @@ export const buttonContainer = (currentKey, prev, depth) => {
                 }
 
                 generateView(false, prevData, listType, prev.dataType);
-            }
+            });
 
             generateView(false, prevData, prev.viewType, prev.dataType);
         }
         // remove initial URL BUTTON
         else {
-            const routeInputURL = document.querySelector("#route-input-url");
-            const routeSearchBtn = document.querySelector("#route-search-btn");
-            const addtlCont = document.querySelector("#additional-container");
-            const urlBtnCont = document.querySelector("#mainURLBtnContainer");
-            const indexCont = document.querySelector("#index-list-container");
-            const dataCont = document.querySelector("#data-list-container");
-            const table = document.querySelector("#table");
-            const spinner = document.querySelector("#spinner");
-            const submitBtn = document.querySelector("#submit");
+            const submitBtn = $("#submit");
 
-            if (routeInputURL.hidden === true) {
-                routeInputURL.hidden = false;
-                routeSearchBtn.hidden = false;
-                routeInputURL.value = '';
+            if ($("#route-input-url").is(':hidden')) {
+                $("#route-input-url").show()
+                $("#route-search-btn").show()
+                $("#route-input-url").val('');
             }
 
-            addtlCont.remove();
-            urlBtnCont.remove();
-            indexCont.remove();
-            dataCont.remove();
-            if (table) {
-                table.remove();
-            }
-            if (spinner) {
-                spinner.remove();
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.hidden = true;
-
+            $("#additional-container")?.remove();
+            $("#mainURLBtnContainer")?.remove();
+            $("#index-list-container")?.remove();
+            $("#data-list-container")?.remove();
+            $("#table")?.remove();
+            $("#spinner")?.remove();
+            $("#submit").prop('disabled', true).hide();
         }
-    }
+    });
 
-    columnContainer.appendChild(inputButtonEl);
-    columnContainer.appendChild(closeBtn);
+    columnContainer.append(inputButtonEl);
+    columnContainer.append(closeBtn);
 
     return columnContainer;
 }

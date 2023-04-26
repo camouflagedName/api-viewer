@@ -2,23 +2,20 @@
  * Replaces URL Input Element and makes the URL interactive
  */
 export const inputTransformer = (remove) => {
-    const routeInputGroup = document.querySelector("#route-input-group");
+    const routeInputGroup = $("#route-input-group");
     let mainContainer;
     if (remove) {
-        const routeInputURL= document.querySelector("#route-input-url");
-        const routeSearchBtn = document.querySelector("#route-search-btn");
-        if (routeInputURL.hidden === false) {
-            routeInputURL.hidden = true;
-            routeSearchBtn.hidden = true;
+        if ($("#route-input-url").is(':visible')) {
+            $("#route-input-url").hide();
+            $("#route-search-btn").hide();
         }
 
-       
         //main container
-        mainContainer = document.createElement("div");
-        mainContainer.className = "d-flex flex-column flex-md-row bg-white col rounded border border-primary border-opacity-75 border-3";
-        mainContainer.id = "mainURLBtnContainer";
+        mainContainer = $("<div>");
+        mainContainer.addClass("d-flex flex-column flex-md-row bg-white col rounded border border-primary border-opacity-75 border-3");
+        mainContainer.attr('id', "mainURLBtnContainer");
 
-        routeInputGroup.appendChild(mainContainer);        
+        routeInputGroup.append(mainContainer);        
     }
 
     return mainContainer;

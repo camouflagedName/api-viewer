@@ -1,7 +1,7 @@
 import { addNodeBtn } from "./addNodeBtn.mjs";
 import { addKeyEl } from "./addKeyEl.mjs";
 
-export const newIndex = (indexCount = 0) => {
+export const createContainer = (indexCount = 0) => {
     const indexCont = document.querySelector("#index-container")
     const keyCont = document.querySelector("#key-container")
 
@@ -38,7 +38,7 @@ export const newIndex = (indexCount = 0) => {
         btnImg.remove();
         buttonEl.remove();
         const containerEl = document.querySelector("#key-container")
-        containerEl.appendChild(newIndex(indexCount));
+        containerEl.appendChild(createContainer(indexCount));
     }
 
     // index col

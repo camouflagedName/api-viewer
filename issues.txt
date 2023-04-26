@@ -1,0 +1,77 @@
+REMAINING ISSUES
+10/26
+
+    VIEW SELECTOR?
+    -update value whenever view table is generated
+
+    DATA MODAL
+    - if hash selected and entry is object => change from string to obj
+    - display is still funky (possibly fixed 11/3)
+
+    CLEAN UP UNUSED OR COMMENTED OUT CODE
+    REFACTOR
+
+11/3
+
+    INDEX COL -> DROPDOWN
+    -multiple columns if in hash view and entry is an array
+
+    MAKE RELOAD BUTTON?
+
+    RESPONSIVE
+
+11/9
+**** DOESN'T SUBMIT WHEN HASH selected
+
+** SUBMIT BUTTON APPEARS WHEN BEFORE KEY IS SELECTED
+
+RESOLVED ISSUES
+10/26
+
+    *EXPAND DATA INPUT
+    - some data is stringified but propbably shouldn't be
+
+    INDEX COL DROPDOWN
+    - objects not displayed correctly --> only dispaly as column if collision (obj.val && obj.next)
+
+    **LIST VIEW & URL INPUT
+    - when going backward through list data, does not produce a table
+
+    ** VIEWTYPE DROPDOWN
+    - reverts back to original data when choosing between "hash" and "list"
+
+    ***URL INPUT BAR
+    - arrows/buttons are removed out of order
+
+    * DATA COL -> BUCKET -> DROPDOWN
+    - remove if hash and only one value
+
+
+10/27
+
+    SPINNER
+    - appears when final URL BUTTON removed
+
+    SUBMIT BUTTON
+    - submit button needs to be removed after returning to original state
+
+    *SUBMIT FUNCTION & DATA
+    - need to determine if proper data will be saved after going backward and forward through json data
+
+    COLLISION TABLE
+    - how does it collect data when moving through JSON data?
+
+
+11/2
+    DATA FIELD
+    - onclick if not object, modal still appears
+
+    VIEW SELECTOR
+    - when reversing through json (closing buttons in URL bar), view selector does not change
+
+11/3
+    VIEW SELECTOR
+    - when removing buttons out of order, does not remove "next" buttons/arrows
+
+    **SUBMIT BUTTON
+    - submit button also appears when retrieving from database

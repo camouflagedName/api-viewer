@@ -1,6 +1,13 @@
-export const createTable = (uniqueLvl, cmpLvl, viability, collisionCount, longestCollision) => {
+/** NEEDS TO BE MOVED TO DIFF FOLDER
+ * Takes in array of headers and entries and returns a table element with headers and row of data
+ * @param {*} headers 
+ * @param {*} entries 
+ * @returns 
+ */
+
+export const createTable = (headers, entries) => {
     const tableEl = document.createElement("table")
-    tableEl.className = "table bg-secondary bg-gradient border border-primary text-light mt-3 mb-0"
+    tableEl.className = "table table-info border border-3 border-primary border-opacity-75 mt-3 mb-0"
     tableEl.id = "table"
     const headEl = document.createElement("thead")
     const bodyEl = document.createElement("tbody")
@@ -21,31 +28,34 @@ export const createTable = (uniqueLvl, cmpLvl, viability, collisionCount, longes
     rowHeadElThree.textContent = "Longest Collision";
     rowHeadElThree.className = "text-center";
 
-    headRowEl.appendChild(rowHeadElOne)
-    headRowEl.appendChild(rowHeadElTwo)
-    headRowEl.appendChild(rowHeadElThree)
+    for (const entry of headers) {
+        const rowHeadEl = document.createElement("th");
+        rowHeadEl.textContent = entry;
+        rowHeadEl.className = "text-center";
+        headRowEl.appendChild(rowHeadEl)
+    }
     headEl.appendChild(headRowEl)
 
     // body
     const cellOne = document.createElement("td");
-    cellOne.textContent = Math.round((uniqueLvl + Number.EPSILON) * 100) / 100 + "%";
     cellOne.className = "text-center";
     
     const cellTwo = document.createElement("td");
-    cellTwo.textContent = collisionCount;
     cellTwo.className = "text-center";
 
     const cellThree = document.createElement("td");
-    cellThree.textContent = longestCollision;
     cellThree.className = "text-center";
 
-    bodyRowEl.appendChild(cellOne)
-    bodyRowEl.appendChild(cellTwo)
-    bodyRowEl.appendChild(cellThree)
-    bodyEl.appendChild(bodyRowEl)
+    for (const entry of entries) {
+        const cellData = document.createElement("td");
+        cellData.textContent = entry;
+        cellData.className = "text-center";
+        bodyRowEl.appendChild(cellData)
+    }
+    bodyEl.appendChild(bodyRowEl);
 
-    tableEl.appendChild(headEl)
-    tableEl.appendChild(bodyEl)
+    tableEl.appendChild(headEl);
+    tableEl.appendChild(bodyEl);
 
-    return tableEl
+    return tableEl;
 }

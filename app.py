@@ -7,10 +7,9 @@ app = Flask(__name__)
 app.debug = True
 app.config["ES6_MODULES"] = True
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-print(app.secret_key)
 
 CORS(app)
-
+print("MICHAEL'S APP WORKS HERE")
 
 @app.route("/sandbox")
 def return_sandbox():
@@ -117,6 +116,7 @@ def show_table():
 
 @app.route("/")
 def default_route():
+    print ("DEFAULT ROUTE")
     return show_table()
     
 @app.route("/get_table", methods=['POST'])

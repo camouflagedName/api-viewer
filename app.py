@@ -10,6 +10,10 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 CORS(app)
 
+@app.route("/")
+def default_route():
+    show_table()
+
 @app.route("/sandbox")
 def return_sandbox():
     return render_template("sandbox.html")

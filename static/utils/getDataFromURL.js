@@ -1,6 +1,6 @@
-import { createViewSelect } from "../components/input/createViewSelect.mjs";
-import { generateView } from "../generators/generateView.mjs";
-import { selectContainer } from "../components/input/hashSelectContainer.mjs";
+import { createViewSelect } from "../components/input/createViewSelect.js";
+import { generateView } from "../generators/generateView.js";
+import { selectContainer } from "../components/input/hashSelectContainer.js";
 
 export const getDataFromURL = async (evt) => {
     evt.preventDefault();

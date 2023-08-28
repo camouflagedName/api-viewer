@@ -1,0 +1,22 @@
+{
+  "name": "api_viewer",
+  "version": "1.0.0",
+  "description": "## Stack This project was developed with Vanilla JavaScript, Bootstrap 5.2, and Flask.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camouflagedName/api-viewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camouflagedName/api-viewer/issues"
+  },
+  "homepage": "https://github.com/camouflagedName/api-viewer#readme",
+  "dependencies": {
+    "typescript": "^5.0.4"
+  }
+}

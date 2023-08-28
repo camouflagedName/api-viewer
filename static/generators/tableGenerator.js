@@ -1,4 +1,4 @@
-import { createTable } from "../Launch/createTable.mjs";
+import { createTable } from "../Launch/createTable.js";
 
 /**
  * Takes in facts about hashmap collisions, passes data and headers to table generator, and returns table (parent node and children).

@@ -1,5 +1,5 @@
-import { addNodeBtn } from "./addNodeBtn.mjs";
-import { addKeyEl } from "./addKeyEl.mjs";
+import { addNodeBtn } from "./addNodeBtn.js";
+import { addKeyEl } from "./addKeyEl.js";
 
 export const createContainer = (indexCount = 0) => {
     const indexCont = document.querySelector("#index-container")

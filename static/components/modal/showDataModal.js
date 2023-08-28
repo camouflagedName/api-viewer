@@ -1,4 +1,4 @@
-import { expandedDataView } from "../displayTable/dataColumn/dataCol.mjs";
+import { expandedDataView } from "../displayTable/dataColumn/dataCol.js";
 /**
  * 
  * @param {*} header 

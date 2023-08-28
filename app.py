@@ -1,4 +1,3 @@
-from tkinter import EXCEPTION
 from flask import Flask, render_template, request, jsonify, flash, session
 from flask_cors import CORS
 import json

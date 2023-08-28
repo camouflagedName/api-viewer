@@ -1,10 +1,10 @@
-import { selectKey } from "../components/input/selectKey.mjs";
-import { tableGenerator } from "./tableGenerator.mjs";
-import { indexCol } from "../components/displayTable/indexColumn/indexCol.mjs";
-import { dataCol } from "../components/displayTable/dataColumn/dataCol.mjs";
-import { generateHeaders } from "./generateHeaders.mjs";
-import { addArrow } from "../addArrow.mjs";
-import { spinner } from "../components/spinner.mjs";
+import { selectKey } from "../components/input/selectKey.js";
+import { tableGenerator } from "./tableGenerator.js";
+import { indexCol } from "../components/displayTable/indexColumn/indexCol.js";
+import { dataCol } from "../components/displayTable/dataColumn/dataCol.js";
+import { generateHeaders } from "./generateHeaders.js";
+import { addArrow } from "../addArrow.js";
+import { spinner } from "../components/spinner.js";
 
 export const generateView = (passedKey, data, viewType = "List", dataType, depthCount = 0) => {
     //const keyContainer = document.querySelector("#key-container");
@@ -84,8 +84,6 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
         } else {
             //remove previous iteration of spinner
             $("#spinner")?.remove();
-            let unorderedIndexEl;
-            let unorderedDataEl;
             let key;
             let collisionCount = 0;
             let longestCollision = 0;
@@ -173,8 +171,8 @@ export const generateView = (passedKey, data, viewType = "List", dataType, depth
                             $unorderedIndexEl.append(indexColEntry);
                         }
                     }
-                    $indexContainer.append(unorderedIndexEl);
-                    $keyContainer.append(unorderedDataEl);
+                    $indexContainer.append($unorderedIndexEl);
+                    $keyContainer.append($unorderedDataEl);
 
                     // place in "view-generator" or "addtlContainer"
                     const table = tableGenerator(key, data, collisionCount, longestCollision);

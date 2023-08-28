@@ -1,4 +1,4 @@
-import { generateView } from "../../generators/generateView.mjs";
+import { generateView } from "../../generators/generateView.js";
 
 export const buttonContainer = (currentKey, prev, depth) => {
     const columnContainer = $("<div>");

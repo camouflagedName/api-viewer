@@ -1,15 +1,13 @@
-from asyncio.windows_events import NULL
-from tkinter import EXCEPTION
-from flask import Flask, render_template, request, jsonify, flash, session
+from flask import Flask, render_template, request, jsonify, session
 from flask_cors import CORS
 import json
 import sqlite3
 
 app = Flask(__name__)
+app.config["ES6_MODULES"] = True
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
 CORS(app)
-
-
 
 @app.route("/sandbox")
 def return_sandbox():
@@ -113,6 +111,10 @@ def show_table():
         pass
 
     return render_template("index.html", tables=table_list)
+
+@app.route("/")
+def default_route():
+    return show_table()
     
 @app.route("/get_table", methods=['POST'])
 def get_table():

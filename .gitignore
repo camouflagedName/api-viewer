@@ -24,3 +24,8 @@ venv/
 
 .cache/
 .pytest_cache/
+
+
+# dependencies
+
+/node_modules

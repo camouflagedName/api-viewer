@@ -1,6 +1,6 @@
-import { generateView } from "../../../generators/generateView.mjs";
-import { buttonContainer } from "../../input/buttonContainer.mjs";
-import { dropdownMenu } from "./dropdownMenu.mjs";
+import { generateView } from "../../../generators/generateView.js";
+import { buttonContainer } from "../../input/buttonContainer.js";
+import { dropdownMenu } from "./dropdownMenu.js";
 
 export const indexCol = (depth, data, index, viewType, parentData) => {
     // create a more global counter to id the url buttons by

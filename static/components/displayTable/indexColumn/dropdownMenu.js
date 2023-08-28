@@ -1,5 +1,5 @@
-import { buttonContainer } from "../../input/buttonContainer.mjs";
-import { generateView } from "../../../generators/generateView.mjs";
+import { buttonContainer } from "../../input/buttonContainer.js";
+import { generateView } from "../../../generators/generateView.js";
 
 export const dropdownMenu = (itemsArr, prev, viewType, depth) => {
     const unorderedEl = document.createElement("ul");

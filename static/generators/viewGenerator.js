@@ -1,8 +1,8 @@
-import { generateView } from "./generateView.mjs";
-import { getDataFromURL } from "../utils/getDataFromURL.mjs";
-import { createTable } from "../Launch/createTable.mjs";
-import { inputTransformer } from "../components/input/inputTransformer.mjs";
-import { buttonContainer } from "../components/input/buttonContainer.mjs";
+import { generateView } from "./generateView.js";
+import { getDataFromURL } from "../utils/getDataFromURL.js";
+import { createTable } from "../Launch/createTable.js";
+import { inputTransformer } from "../components/input/inputTransformer.js";
+import { buttonContainer } from "../components/input/buttonContainer.js";
 
 export const viewGenerator = () => {
     const $submitEl = $("#table-form");

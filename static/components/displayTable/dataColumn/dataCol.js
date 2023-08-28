@@ -1,4 +1,4 @@
-import { showDataModal } from "../../modal/showDataModal.mjs";
+import { showDataModal } from "../../modal/showDataModal.js";
 
 export const dataCol = (rowNum, data, key, hasCollision) => {
     const inputEl = document.createElement("div");

@@ -2,7 +2,7 @@
 #### Video Demo:  https://youtu.be/PUc_3JxBoiI
 
 ## Stack
-This project was developed with Vanilla JavaScript, Bootstrap 5.2, and Flask.
+This project was developed with JQuery, SQLite, Bootstrap 5.2, and Flask.
 
 ## Description
 My final project is a fullstack web app that fetches and displays data to the user and provides a database to save data for viewing later. The app generates most of the web page dynamically based on the users input and based on the data retrieved. It is built to be responsive and viewable on mobile devices without losing any functionality.

@@ -4,8 +4,8 @@ import json
 import sqlite3
 
 app = Flask(__name__)
-app.debug = True
 app.config["ES6_MODULES"] = True
+app.config["DEBUG"] = True
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 CORS(app)
